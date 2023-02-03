@@ -1,20 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigation from './routes/RootNavigation';
+import { platform, statusbarHeight } from './constants';
+import { useFonts } from 'expo-font'
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 export default function App() {
+
+  const [loaded] = useFonts({
+    "Helvetica": require('./assets/fonts/Helvetica-Font/Helvetica.ttf'),
+    "Helvetica-Bold": require('./assets/fonts/Helvetica-Font/Helvetica-Bold.ttf'),
+    "Helvetica-Light": require('./assets/fonts/Helvetica-Font/helvetica-light-587ebe5a59211.ttf'),
+  })
+
+  if(!loaded) return null
+
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+        <StatusBar style="auto" />
+          <NavigationContainer>
+          <RootNavigation />
+          </NavigationContainer>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
