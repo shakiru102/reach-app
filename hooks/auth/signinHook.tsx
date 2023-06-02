@@ -28,7 +28,7 @@ const signinHook = () => {
         
         setLoading(false)
         setError(true)
-        setErrorText('Phonenumber or Password is incorrect')
+        setErrorText('Incorrect password or phone number.')
       }
     }
 

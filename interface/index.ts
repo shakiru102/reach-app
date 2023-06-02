@@ -3,7 +3,9 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 export type AuthStackPramsList = {
     signup: undefined;
     signin: undefined;
-    reeachId: undefined
+    reeachId: undefined;
+    "initiate-reset-password": undefined;
+    "reset-password": undefined;
 }
 
 export type ReeachStackPramsList = {

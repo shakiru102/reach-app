@@ -1,5 +1,5 @@
 import { Motion } from '@legendapp/motion'
-import React, { FC, ReactDOM, ReactElement } from 'react'
+import React, { FC, ReactElement } from 'react'
 import { KeyboardType } from 'react-native';
 import { OutlinedTextField } from 'rn-material-ui-textfield'
 import { screenSize } from '../../constants';
@@ -10,7 +10,8 @@ interface FormInputProps {
   value: string;
   onChangeText: (e?: any) => void;
   secureTextEntry?: boolean;
-  renderRightAccessory?: () => ReactElement
+  renderRightAccessory?: () => ReactElement;
+  isTyping?: boolean
 }
 
 
@@ -20,10 +21,18 @@ const FormInput: FC<FormInputProps> = ({
   onChangeText,
   value,
   secureTextEntry,
-  renderRightAccessory
+  renderRightAccessory,
+  isTyping
 }) => { 
+
+
   return (
-    <Motion.View className={` m-2`}>
+    <Motion.View 
+    // className={`m-2`}
+    animate={
+      isTyping ? { margin: 12 } : { margin: 8 }
+    }
+    >
       <OutlinedTextField 
        label={label}
        keyboardType={keyboardType}

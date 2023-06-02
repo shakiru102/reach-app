@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, SafeAreaView, ImageBackground } from 'react-native'
 import React, { FC, useState } from 'react'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AuthStackPramsList } from '../../interface'
@@ -8,6 +8,7 @@ import { platform, screenSize, statusbarHeight } from '../../constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import signupHook from '../../hooks/auth/signupHook'
 import { Snackbar } from 'react-native-paper'
+import Bg from '../../assets/signupbg.png'
 
 type SignpScreenProps = StackScreenProps<AuthStackPramsList, 'signup'>
 
@@ -18,20 +19,8 @@ const Signup: FC<SignpScreenProps> = ({
   const props = signupHook()
 
   return (
-    <SafeAreaView 
-    style={{
-      paddingTop: platform === 'android' ? statusbarHeight : 0
-    }}
-    className='flex-1 bg-white dark:bg-black'>
-       
-
-      <KeyboardAwareScrollView
-      className='bg-white dark:bg-black'
-      enableOnAndroid
-      >
-        
-        <Motion.View className={` ${ screenSize === 'phone' ? 'px-1' : 'px-40'}  py-24 flex-1 bg-white`}>
-        <Motion.View className={`mb-12`}>
+    <View className='flex-1 bg-white '>
+       <ImageBackground source={Bg} className={`${ screenSize === 'phone' ? 'px-1' : 'px-40'} pb-12 mb-4 pt-24`}>
         <Snackbar
         visible={props.error}
         onDismiss={() => props.setError(false)}
@@ -39,7 +28,7 @@ const Signup: FC<SignpScreenProps> = ({
         elevation={0}
         className={'bg-transparent'}
         >
-        <Text className='text-white bg-orange-600 p-1 rounded-[8px] text-center'>{ props.errorText }</Text>
+        <Text className='text-[#EA0E0E] p-1 text-center'>{ props.errorText }</Text>
         </Snackbar>
            <Motion.Text
            className={`${ screenSize === 'phone' ? ' pl-3 text-[20.86px]': 'text-[32px]' } font-helvetical-bold`}
@@ -51,11 +40,17 @@ const Signup: FC<SignpScreenProps> = ({
              <Text className={`${ screenSize === 'phone' ? 'text-[12.52px]': 'text-[16px]' } text-[#2F80ED] font-helvetical-bold`}> Sign in</Text>
              </TouchableWithoutFeedback>
              </Motion.Text>
-        </Motion.View>
+        </ImageBackground>
+      <KeyboardAwareScrollView
+     showsVerticalScrollIndicator={false}
+      className='bg-white'
+      enableOnAndroid
+      >
+        <Motion.View className={` ${ screenSize === 'phone' ? 'px-1' : 'px-40'}  pb-24 flex-1 bg-white`}>
         <SignupForm {...props} />
     </Motion.View>
       </KeyboardAwareScrollView>
-      </SafeAreaView>
+      </View>
   )
 }
 

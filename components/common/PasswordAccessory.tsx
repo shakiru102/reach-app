@@ -14,7 +14,7 @@ const PasswordAccessory: FC<PasswordAccessoryProps> = ({
   return (
     <TouchableOpacity onPress={btntoggle} className={'top-1'}>
         <Text
-            className={`${screenSize === 'phone' ? 'text-[10.52px]' : 'text-[14px]'} ${ platform === 'ios' ? 'bottom-1' : 'bottom-0' }  bg-white font-helvetical-bold text-[#2F80ED]`}
+            className={`${screenSize === 'phone' ? 'text-[10.52px]' : 'text-[14px]'} bottom-1  bg-white font-helvetical-bold text-[#2F80ED]`}
         >{ btn ? 'Hide' : 'Show' }</Text>
     </TouchableOpacity>
   )

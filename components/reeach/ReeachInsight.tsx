@@ -33,7 +33,7 @@ const ReeachInsight: FC<ReeachInsightProps> = ({
             </TouchableOpacity>
         </View>
       </View>
-      <View className={`py-5 pr-5 ${  screenSize === 'tablet' && 'pl-5' } flex-1`}>
+      <View className={`p-5 ${  screenSize === 'tablet' && 'pl-5' } flex-1`}>
          {
           screenSize === 'tablet' ? (
             <View>
@@ -47,7 +47,7 @@ const ReeachInsight: FC<ReeachInsightProps> = ({
           ) : (
              <View className='flex-row justify-end items-center'> 
                <AntDesign name="qrcode" size={20} color="black" />
-               <Text className='font-helvetical text-[12px] ml-2 w-[80px]'
+               <Text className='font-helvetical text-[12px] ml-2 '
                >{ auth?.user.reeachId }</Text>
              </View>
           )

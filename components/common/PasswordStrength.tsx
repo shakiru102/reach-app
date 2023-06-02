@@ -5,15 +5,37 @@ import { passwordStrength } from "check-password-strength";
 import { AntDesign } from '@expo/vector-icons';
 
 interface PasswordValue {
-    password: string
+    password: string;
+    replica?: string
 }
 type PassStrengthProp = 'Weak' | 'Medium' | 'Strong' | 'Too weak'
 
 const PasswordStrength: FC<PasswordValue> = ({
-    password
+    password,
+    replica
 }) => {
 
     const passStrength: PassStrengthProp = useMemo((): any => passwordStrength(password).value,[password])
+
+  if(replica) {
+    return (
+      <View className='p-4'>
+     <View > 
+        <Text className={`${ screenSize === 'phone' ? 'text-[10.62px] ' : 'text-[16px]' } font-helvetical-bold text-[#000000]`}>Has to be:</Text>
+     </View>
+     <View
+     className='py-3 flex-row justify-between items-center'
+     >
+      <Text className={`${ screenSize === 'phone' ? 'text-[10.62px] ' : 'text-[16px]' } text-[#333333] font-helvetical`}>
+      Same with the password above
+      </Text>
+      <Text>
+      { replica === password ? <AntDesign name="checkcircle" size={18} color="#27AE60" /> : <AntDesign name="closecircleo" size={18} color="#333333" /> }
+      </Text>
+     </View>
+     </View>
+    )
+  }
 
   return (
     <View className='p-4'>

@@ -1,21 +1,20 @@
 import { Motion } from '@legendapp/motion'
 import { Formik } from 'formik'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
-import { initiateSignin } from '../../api/auth/auth'
 import { screenSize } from '../../constants'
-import signinHook, { signinHookProps } from '../../hooks/auth/signinHook'
-import { toggleAuth } from '../../store/reducer/authSlice'
+import { signinHookProps } from '../../hooks/auth/signinHook'
 import FormInput from '../common/FormInput'
 import ReeachButton from '../common/ReeachButton'
-import PasswordAccessory from '../signup/PasswordAccessory'
-import { Snackbar } from 'react-native-paper'
-import axios, { AxiosResponse } from 'axios'
-import { AuthUserResponseParams } from '../../interface/auth'
+import PasswordAccessory from '../common/PasswordAccessory'
 
-const SigninForm: FC<signinHookProps> = ({
+interface SignInProps extends signinHookProps {
+  intiateRouteNavigation: (e?: any) => void
+}
+
+const SigninForm: FC<SignInProps> = ({
       passwordBtn,
         setPasswordBtn,
         initiateLogin,
@@ -23,13 +22,14 @@ const SigninForm: FC<signinHookProps> = ({
         error,
         errorText,
         setError,
+        intiateRouteNavigation
 }) => {
 
     const signinSchema = yup.object().shape({
         phoneNumber: yup.string().required(),
         password: yup.string().required()
     })
-
+   const [typing, setTyping] = useState<boolean>(false)
     
 
     const dispatch = useDispatch()
@@ -57,13 +57,19 @@ const SigninForm: FC<signinHookProps> = ({
         handleChange,
         isValid,
         handleSubmit
-     }) => (
+     }) => {
+
+      if(values.password || values.phoneNumber) setTyping(true)
+      else setTyping(false)
+
+      return (
         <Motion.View className='p-2 flex-1  bg-white'>
             <FormInput 
             keyboardType='phone-pad'
             label='Phone number'
             onChangeText={handleChange('phoneNumber')}
             value={values.phoneNumber}
+            isTyping={typing}
             />
             <FormInput 
             keyboardType='default'
@@ -72,11 +78,12 @@ const SigninForm: FC<signinHookProps> = ({
             value={values.password}
             secureTextEntry={!passwordBtn}
              renderRightAccessory={() => <PasswordAccessory btn={passwordBtn} btntoggle={() => setPasswordBtn(prev => !prev)} />}
+            isTyping={typing}
             />
             <View className='px-2'>
                <Text className={`font-helvetical ${ screenSize === 'phone' ? 'text-[12.52px]' : 'text-[16px]' } text-[#4F4F4F] text-right`}>
                Can’t remember password?
-               <Text className='text-[#2F80ED]'>{' '} Reset password</Text>
+               <Text onPress={intiateRouteNavigation} className='text-[#2F80ED]'>{' '} Reset password</Text>
                </Text>
             </View>
             <View className='flex-row mt-8 px-2'>
@@ -89,7 +96,8 @@ const SigninForm: FC<signinHookProps> = ({
             />
             </View>
         </Motion.View>
-     )}
+     )
+     }}
     </Formik>
     </>
   )

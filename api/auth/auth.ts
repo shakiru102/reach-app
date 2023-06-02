@@ -10,7 +10,7 @@ export const initiateSignup = async (params: AuthSignupParams) => {
         return { auth: res.data }
     } catch (error: any) {
         return {
-            error: error.message
+            error: error.response.data
         }
     }
 }
@@ -26,7 +26,7 @@ export const initiateSignin = async (params: AuthSigninParams) => {
         return { auth: res.data }
     } catch (error: any) {
         return {
-            error: error.message
+            error: error.response.data
         }
     }
 
@@ -43,7 +43,7 @@ export const initiateAuthPhoneumberVerification = async ({ phoneNumber }: AuthVe
     } catch (error: any) {
         
         return {
-            error: error.message
+            error: error.response.data
         }
     }
 }

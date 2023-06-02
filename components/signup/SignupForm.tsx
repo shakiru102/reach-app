@@ -1,17 +1,15 @@
 import { AnimatePresence, Motion } from '@legendapp/motion'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { signupHookProps } from '../../hooks/auth/signupHook'
 import FormInput from '../common/FormInput'
-import PhonenumberAccessory from './PhonenumberAccessory'
-import { Formik, FormikValues } from 'formik'
-import VerifyPhonenummber from './VerifyPhonenummber'
+import PhonenumberAccessory from '../common/PhonenumberAccessory'
+import { Formik } from 'formik'
+import VerifyPhonenummber from '../common/VerifyPhonenummber'
 import { Text, View } from 'react-native'
 import CheckBox from 'expo-checkbox'
 import ReeachButton from '../common/ReeachButton'
-import PasswordStrength from './PasswordStrength'
-import PasswordAccessory from './PasswordAccessory'
-import { initiateSignup } from '../../api/auth/auth'
-import { Snackbar } from 'react-native-paper'
+import PasswordStrength from '../common/PasswordStrength'
+import PasswordAccessory from '../common/PasswordAccessory'
 
 
 
@@ -42,7 +40,7 @@ const SignupForm: FC<signupHookProps> = ({
     loading
 }) => {
 
-
+    const [typing, setTyping] = useState<boolean>(false)
 
   return (
     <>
@@ -76,7 +74,18 @@ const SignupForm: FC<signupHookProps> = ({
         setFieldValue,
         isValid,
         handleSubmit
-     }) => (
+     }) => {
+
+        if(
+            values.password || 
+            values.phoneNumber || 
+            values.firstName || 
+            values.lastName ||
+            values.nob
+            ) setTyping(true)
+      else setTyping(false)
+        
+     return (
         <Motion.View className='p-2 bg-white'>
         <Motion.View className={`flex-row `}>
            <Motion.View className={`flex-1`}>
@@ -85,6 +94,7 @@ const SignupForm: FC<signupHookProps> = ({
                 label='First name'
                 onChangeText={handleChange('firstName')}
                 value={values.firstName}
+                isTyping={typing}
                 />
            </Motion.View>
             <Motion.View className={`flex-1`}>
@@ -93,6 +103,8 @@ const SignupForm: FC<signupHookProps> = ({
                 label='Last name'
                 onChangeText={handleChange('lastName')}
                 value={values.lastName}
+                isTyping={typing}
+
                 />
             </Motion.View>
         </Motion.View>
@@ -113,7 +125,8 @@ const SignupForm: FC<signupHookProps> = ({
          }}
          value={values.phoneNumber}
          renderRightAccessory={() => <PhonenumberAccessory activeState={phonenumberBtnState} onInitiateVerification={() => initiatePhonenumberVerification(values.phoneNumber)} />}
-        />
+         isTyping={typing}
+         />
 
         <Motion.View
         className={'border-[#E0E0E0] mx-2 rounded-b-[4px] -top-1'}
@@ -156,6 +169,7 @@ const SignupForm: FC<signupHookProps> = ({
             label='Name of your business'
             onChangeText={handleChange('nob')}
             value={values.nob}
+            isTyping={typing}
             />
             <FormInput 
             keyboardType='default'
@@ -179,7 +193,8 @@ const SignupForm: FC<signupHookProps> = ({
             value={values.password}
             secureTextEntry={!passwordBtn}
              renderRightAccessory={() => <PasswordAccessory btn={passwordBtn} btntoggle={() => setPasswordBtn(prev => !prev)} />}
-            />
+             isTyping={typing}
+             />
             <Motion.View
         className={'border-[#E0E0E0] mx-2 rounded-b-[4px] -top-1'}
         animate={ !passwordHint ? {
@@ -234,7 +249,7 @@ const SignupForm: FC<signupHookProps> = ({
             />
             </View>
         </Motion.View>
-    )}
+    )}}
   
     </Formik>
     </>

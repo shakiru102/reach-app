@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Text, View } from 'react-native'
 import { screenSize } from '../../constants'
 import { confirmOtpProps } from '../../hooks/auth/signupHook'
-import Otp from '../common/Otp'
+import Otp from './Otp'
 import InitializeCountDown from './InitializeCountDown'
 
 interface VerifyPhonenummberProps {
@@ -13,6 +13,7 @@ interface VerifyPhonenummberProps {
     countdown: any;
     clear: string;
     initiateClear: (e?: any) => void;
+    actionType?: 'verify' | 'reset'
 }
 
 const VerifyPhonenummber: FC<VerifyPhonenummberProps> = ({
@@ -22,6 +23,7 @@ const VerifyPhonenummber: FC<VerifyPhonenummberProps> = ({
     initiateResendOtp,
     clear,
     initiateClear,
+    actionType
 }) => {
   return (
     <Motion.View 
@@ -34,14 +36,14 @@ const VerifyPhonenummber: FC<VerifyPhonenummberProps> = ({
       <Motion.View>
         <Motion.Text 
         className={`${ screenSize === 'phone' ? 'text-[11.95px]' : 'text-[18px]' } font-helvetical-bold`}
-        >Verify number{' '}
+        > { actionType === 'reset' ? 'Provide code ' : 'Verify number ' } 
         { confirmOtp === 'error' && 
         <Motion.Text
          className='font-helvetical text-[#EA0E0E]'> 
         <View  className='font-helvetical-bold bg-black w-[4px] h-[4px] rounded-full' /> Incorrect code provided</Motion.Text>
         }
         </Motion.Text>
-        <Motion.Text className={`${ screenSize === 'phone' ? 'text-[10.62px]' : 'text-[16px]' } font-helvetical mt-1 text-[#333333]`}>We sent you an SMS with a 6-digit Code. Provide it to verify your phone number.</Motion.Text>
+        <Motion.Text className={`${ screenSize === 'phone' ? 'text-[10.62px]' : 'text-[16px]' } font-helvetical mt-1 text-[#333333]`}>We sent you an SMS with a 6-digit Code. Provide it to { actionType === 'reset' ? 'reset' : 'verify' } your phone number.</Motion.Text>
       </Motion.View>
       <Otp 
       onInputFilled={initiateConfirmOtp} 
